@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Citizen Assist AI Energia | SERS — FIAP</title>
+  <style>
+    :root{
+      --bg:#f7f7f8; --surface:#ffffff; --surface-2:#f2f3f5; --border:#e4e7ec; --text:#101828;
+      --muted:#667085; --muted-2:#98a2b3; --primary:#111827; --primary-soft:#eef2ff;
+      --accent:#2563eb; --success:#027a48; --danger:#b42318; --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 24px rgba(16,24,40,.06);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Inter,Roboto,Arial,sans-serif}
+    button,input,textarea{font:inherit}
+    a{color:inherit}
+    .hidden{display:none !important}
+
+    .landing{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px}
+    .landing-card{max-width:920px;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:28px;box-shadow:var(--shadow);padding:34px}
+    .eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .landing h1{font-size:40px;line-height:1.08;margin:12px 0 10px}
+    .landing p{color:var(--muted);margin:0 0 24px}
+    .entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+    .entry-card{background:var(--surface-2);border:1px solid var(--border);border-radius:22px;padding:22px;text-decoration:none;display:block}
+    .entry-card:hover{border-color:#cbd5e1;transform:translateY(-1px)}
+    .entry-card strong{display:block;font-size:18px;margin:12px 0 8px}
+    .entry-card small{display:block;color:var(--muted)}
+    .badge-line{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .badge{padding:6px 12px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);font-size:13px;color:var(--muted)}
+
+    .page{min-height:100vh;display:flex;flex-direction:column}
+    .topbar{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);background:rgba(247,247,248,.92);backdrop-filter:blur(10px)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{width:34px;height:34px;border-radius:10px;background:#111827;color:#fff;display:grid;place-items:center;font-weight:700}
+    .brand h1{font-size:16px;margin:0}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .id-pill{padding:8px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--border);font-size:13px;color:var(--muted)}
+    .top-link,.ghost-btn,.primary-btn,.danger-btn,.choice-btn,.small-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:12px;padding:10px 14px;cursor:pointer}
+    .ghost-btn:hover,.top-link:hover,.small-btn:hover,.choice-btn:hover{background:#fafafa}
+    .primary-btn{background:#111827;color:#fff;border-color:#111827}
+    .primary-btn:hover{background:#0b1220}
+    .danger-btn{color:var(--danger);border-color:#fecdca;background:#fff}
+    .danger-btn:hover{background:#fff5f4}
+    .top-link{text-decoration:none}
+
+    .layout{flex:1;display:grid;grid-template-columns:minmax(0,1fr);gap:0;max-width:1400px;width:100%;margin:0 auto;padding:24px}
+    .layout.operator{grid-template-columns:minmax(0,1.2fr) minmax(340px,.8fr);gap:24px;align-items:start}
+    .chat-shell,.panel-shell{background:var(--surface);border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);min-height:78vh}
+    .chat-shell{display:flex;flex-direction:column;overflow:hidden}
+    .panel-shell{padding:20px;overflow:auto}
+    .chat-head{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+    .chat-head h2{margin:2px 0 4px;font-size:20px}
+    .chat-head p{margin:0;color:var(--muted);font-size:14px}
+    .chat-tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .chat-tools .ghost-btn,.chat-tools .small-btn{padding:9px 12px}
+    .chat-wrap{display:flex;flex-direction:column;min-height:0;flex:1}
+    .messages{flex:1;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:16px;background:linear-gradient(#fff,#fcfcfd)}
+
+    .message{display:flex;gap:12px;max-width:100%}
+    .message.user{justify-content:flex-end}
+    .avatar{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#111827;color:#fff;flex:0 0 auto;font-size:14px}
+    .message.user .avatar{background:#2563eb;order:2}
+    .bubble{max-width:min(760px,92%);padding:14px 16px;border-radius:18px;border:1px solid var(--border);background:var(--surface);white-space:pre-wrap;word-wrap:break-word}
+    .message.user .bubble{background:#111827;color:#fff;border-color:#111827}
+    .welcome-box{padding:20px;border:1px solid var(--border);border-radius:18px;background:var(--surface-2)}
+    .welcome-box h3{margin:0 0 8px;font-size:20px}
+    .welcome-box p{margin:0;color:var(--muted)}
+    .quick-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .quick-btn{padding:10px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;cursor:pointer}
+    .quick-btn:hover{background:#fafafa}
+
+    .result-card h4{margin:0 0 4px;font-size:16px}
+    .meta-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+    .mini-pill{font-size:12px;border:1px solid var(--border);background:var(--surface-2);padding:4px 8px;border-radius:999px;color:var(--muted)}
+    .result-card section{margin-top:14px}
+    .result-card section strong{display:block;margin-bottom:6px;font-size:13px}
+    .doc-list{margin:0;padding-left:18px}
+    .answer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .alternatives{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+    .alternatives ul{margin:8px 0 0;padding-left:18px}
+
+    .composer{padding:18px 22px;border-top:1px solid var(--border);background:#fff}
+    .compose-box{border:1px solid var(--border);border-radius:20px;padding:12px 12px 10px;background:var(--surface)}
+    .compose-box textarea{width:100%;border:none;outline:none;resize:none;min-height:70px;max-height:180px;background:transparent;color:var(--text)}
+    .compose-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
+    .compose-hint{font-size:12px;color:var(--muted)}
+    .composer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .send-row{display:flex;gap:10px;align-items:center}
+
+    .stats-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px}
+    .stat-card{border:1px solid var(--border);border-radius:18px;padding:16px;background:var(--surface-2)}
+    .stat-card .label{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .stat-card .value{font-size:28px;font-weight:700;line-height:1.1}
+    .stat-card .sub{font-size:12px;color:var(--muted);margin-top:6px}
+    .section-card{border:1px solid var(--border);border-radius:18px;padding:16px;background:#fff;margin-top:16px}
+    .section-card h3{margin:0 0 12px;font-size:16px}
+    .progress-line{margin:10px 0}
+    .progress-head{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted);margin-bottom:6px}
+    .progress-bar{height:10px;background:#eef2f6;border-radius:999px;overflow:hidden}
+    .progress-bar i{display:block;height:100%;background:#111827;border-radius:999px;width:0}
+    .small-note{font-size:12px;color:var(--muted)}
+    .unsolved-list{margin:0;padding-left:18px;color:var(--text)}
+    .empty{color:var(--muted);font-size:14px}
+    .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:16px}
+    table{width:100%;border-collapse:collapse;background:#fff}
+    th,td{padding:12px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;font-size:13px}
+    th{background:#fafafa;color:var(--muted);font-weight:600;position:sticky;top:0}
+    tr:last-child td{border-bottom:none}
+    .yes{color:var(--success);font-weight:600}
+    .no{color:var(--danger);font-weight:600}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(16,24,40,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+    .modal-backdrop.show{display:flex}
+    .modal{max-width:720px;width:100%;max-height:85vh;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);padding:20px}
+    .modal h3{margin:0 0 6px}
+    .category-block{border:1px solid var(--border);border-radius:16px;padding:14px;background:var(--surface-2);margin-top:14px}
+    .category-block h4{margin:0 0 10px;font-size:15px}
+    .cat-buttons{display:flex;flex-wrap:wrap;gap:8px}
+    .cat-buttons button{padding:9px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer;text-align:left}
+    .rating-row{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+    .rating-row button{width:46px;height:46px;border-radius:12px;border:1px solid var(--border);background:#fff;cursor:pointer}
+    .rating-row button.active{background:#111827;color:#fff;border-color:#111827}
+    .toast{position:fixed;right:18px;bottom:18px;background:#111827;color:#fff;padding:12px 14px;border-radius:14px;box-shadow:var(--shadow);max-width:320px;display:none;z-index:30}
+    .toast.show{display:block}
+
+    @media (max-width: 1100px){
+      .layout.operator{grid-template-columns:1fr}
+      .panel-shell{min-height:auto}
+    }
+    @media (max-width: 760px){
+      .entry-grid{grid-template-columns:1fr}
+      .landing h1{font-size:32px}
+      .layout{padding:14px}
+      .chat-head,.messages,.composer,.panel-shell{padding-left:16px;padding-right:16px}
+      .topbar{padding:12px 14px}
+      .stats-grid{grid-template-columns:1fr}
+      .compose-foot{flex-direction:column;align-items:flex-start}
+      .top-actions{justify-content:flex-end}
+      .chat-tools{justify-content:flex-start}
+      .message .bubble{max-width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main id="landing" class="landing hidden">
+    <section class="landing-card">
+      <div class="eyebrow">Global Solution 2026.2 · SERS · FIAP</div>
+      <h1>Citizen Assist AI · Energia</h1>
+      <p>Assistente de energia para estudantes de Ciência da Computação. Estima o consumo de um notebook e compara eficiência energética com energia solar, explicando hipóteses, custos, impactos e limitações.</p>
+      <div class="badge-line">
+        <span class="badge">Sem IA generativa</span>
+        <span class="badge">Busca por pontuação</span>
+        <span class="badge">Fontes identificadas</span>
+        <span class="badge">Histórico + CSV</span>
+      </div>
+      <div class="entry-grid">
+        <a class="entry-card" href="/usuario">
+          <div class="eyebrow">Acesso do participante</div>
+          <strong>Usar o chatbot</strong>
+          <small>Interface simples para fazer perguntas, ver a orientação, avaliar se ajudou e finalizar a participação.</small>
+        </a>
+        <a class="entry-card" href="/operador">
+          <div class="eyebrow">Acesso do operador</div>
+          <strong>Chat + estatísticas</strong>
+          <small>Área para testar o fluxo, acompanhar os testes de compreensão e utilidade e exportar os atendimentos em CSV.</small>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <div id="app" class="page hidden">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">CA</div>
+        <div>
+          <h1>Citizen Assist AI · Energia</h1>
+          <p id="subtitle">Energia e sustentabilidade · estudo de notebook</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span id="idPill" class="id-pill">Sessão</span>
+        <a class="top-link" id="switchRoleLink" href="/">Trocar acesso</a>
+      </div>
+    </header>
+
+    <div id="mainLayout" class="layout">
+      <section class="chat-shell">
+        <div class="chat-head">
+          <div>
+            <div class="eyebrow" id="headEyebrow">Chat do participante</div>
+            <h2 id="chatTitle">Mini chatbot de orientação</h2>
+            <p id="chatDescription">Faça perguntas sobre consumo do notebook, economia de energia e energia solar fotovoltaica.</p>
+          </div>
+          <div class="chat-tools">
+            <button id="categoriesOpen" class="ghost-btn">Ver orientações por categoria</button>
+            <button id="newParticipantBtn" class="ghost-btn hidden">Novo participante</button>
+            <button id="finishBtn" class="primary-btn hidden">Finalizar participação</button>
+            <a id="exportBtnTop" class="ghost-btn hidden" href="/api/exportar" download="atendimentos.csv">Exportar CSV</a>
+          </div>
+        </div>
+
+        <div class="chat-wrap">
+          <div id="messages" class="messages"></div>
+
+          <div class="composer">
+            <div class="compose-box">
+              <textarea id="input" maxlength="500" placeholder="Ex.: Quanto gasta meu notebook de energia?"></textarea>
+              <div class="compose-foot">
+                <div class="compose-hint" id="inputHint">Responde sobre consumo, eficiência e energia solar; todos os números são simulações.</div>
+                <div class="send-row">
+                  <span class="compose-hint">Enter envia · Shift+Enter quebra linha</span>
+                  <button id="sendBtn" class="primary-btn">Enviar</button>
+                </div>
+              </div>
+            </div>
+            <div class="composer-actions">
+              <button id="unsolvedBtn" class="danger-btn hidden">Encerrar dúvida sem solução</button>
+              <button id="clearBtn" class="small-btn">Limpar conversa</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside id="operatorPanel" class="panel-shell hidden">
+        <div class="eyebrow">Painel do operador</div>
+        <h2 style="margin:6px 0 6px">Indicadores e histórico</h2>
+        <p style="margin:0 0 16px;color:var(--muted)">Os indicadores dos participantes são independentes das simulações do operador. Para SERS, registre também comentários de compreensão no arquivo testes/registro_testes.md.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Atendimentos dos participantes</div><div id="kTotal" class="value">—</div><div class="sub">registros de participantes</div></div>
+          <div class="stat-card"><div class="label">Participantes</div><div id="kParticipants" class="value">—</div><div class="sub">IDs únicos gerados por sessão</div></div>
+          <div class="stat-card"><div class="label">Perguntas válidas</div><div id="kQuestions" class="value">—</div><div class="sub">todas as perguntas feitas pelos participantes</div></div>
+          <div class="stat-card"><div class="label">Resposta encontrada</div><div id="kFound" class="value">—</div><div class="sub">percentual de atendimentos</div></div>
+          <div class="stat-card"><div class="label">Respostas consideradas úteis</div><div id="kHelped" class="value">—</div><div class="sub">respostas marcadas como úteis</div></div>
+          <div class="stat-card"><div class="label">Tempo médio</div><div id="kTime" class="value">—</div><div class="sub">segundos para encontrar</div></div>
+          <div class="stat-card"><div class="label">Tentativas por atendimento</div><div id="kAttempts" class="value">—</div><div class="sub">média de reformulações</div></div>
+          <div class="stat-card"><div class="label">Facilidade de uso</div><div id="kEase" class="value">—</div><div class="sub">média das notas 1 a 5</div></div>
+        </div>
+
+        <section class="section-card">
+          <h3>Validação específica de SERS</h3>
+          <div class="small-note">Peça a participantes que consultem as três orientações de energia. Além do feedback de utilidade nesta tela, registre a compreensão, os comentários e os ajustes reais em <code>testes/registro_testes.md</code>. O enunciado de SERS não fixa 3 participantes nem 10 atendimentos.</div>
+        </section>
+
+        <section class="section-card">
+          <h3>Dúvidas sem solução</h3>
+          <ul id="unsolvedList" class="unsolved-list"></ul>
+          <div id="unsolvedEmpty" class="empty">Nenhuma dúvida sem solução registrada.</div>
+        </section>
+
+        <section class="section-card">
+          <h3>Histórico dos participantes</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Participante</th><th>Pergunta final</th><th>Perguntas feitas</th><th>Encontrou</th><th>Ajudou</th><th>Tentativas</th><th>Tempo</th></tr></thead>
+              <tbody id="historyTestBody"><tr><td colspan="7">Nenhum atendimento registrado.</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <h3>Conversas do operador</h3>
+          <div class="small-note" style="margin-bottom:10px">Essas interações não entram nos indicadores dos participantes, mas ficam registradas separadamente.</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Pergunta final</th><th>Perguntas feitas</th><th>Encontrou</th><th>Ajudou</th><th>Tentativas</th><th>Tempo</th></tr></thead>
+              <tbody id="historyOperatorBody"><tr><td colspan="6">Nenhuma conversa do operador registrada.</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div id="categoriesModal" class="modal-backdrop">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+        <div>
+          <div class="eyebrow">Base de conhecimento</div>
+          <h3>Orientações por categoria</h3>
+          <p style="margin:0;color:var(--muted)">Você pode escolher uma orientação diretamente, sem digitar uma pergunta.</p>
+        </div>
+        <button id="categoriesClose" class="ghost-btn">Fechar</button>
+      </div>
+      <div id="categoriesContent"></div>
+    </div>
+  </div>
+
+  <div id="ratingModal" class="modal-backdrop">
+    <div class="modal" style="max-width:520px">
+      <div class="eyebrow">Encerrar participação</div>
+      <h3 style="margin-top:8px">Como foi utilizar o assistente?</h3>
+      <p style="color:var(--muted)">Escolha uma nota de 1 a 5. Essa avaliação é usada no indicador de facilidade de uso.</p>
+      <div id="ratingButtons" class="rating-row">
+        <button data-rate="1">1</button>
+        <button data-rate="2">2</button>
+        <button data-rate="3">3</button>
+        <button data-rate="4">4</button>
+        <button data-rate="5">5</button>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">
+        <button id="ratingCancel" class="ghost-btn">Cancelar</button>
+        <button id="ratingSave" class="primary-btn" disabled>Salvar avaliação</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    'use strict';
+    const $ = (id) => document.getElementById(id);
+    const state = {
+      route: location.pathname,
+      mode: null,
+      participant: '',
+      categories: [],
+      loading: false,
+      waitingEvaluation: false,
+      selectedRating: null,
+      pollTimer: null,
+      anyInteraction: false,
+    };
+
+    function toast(message){
+      const node = $('toast');
+      node.textContent = message;
+      node.classList.add('show');
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => node.classList.remove('show'), 3600);
+    }
+
+    function escapeHtml(text){
+      return String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    async function fetchJson(url, options){
+      const response = await fetch(url, options);
+      let data = {};
+      try { data = await response.json(); } catch(_) {}
+      if(!response.ok){ throw new Error(data.erro || 'Falha na comunicação com o servidor.'); }
+      return data;
+    }
+
+    async function apiPost(path, payload){
+      return fetchJson('/api/' + path, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+    }
+
+    async function carregarBase(){
+      const data = await fetchJson('/api/base');
+      state.categories = data.categorias || [];
+      renderCategories();
+    }
+
+    function addMessage(role, html){
+      const wrap = document.createElement('div');
+      wrap.className = 'message ' + (role === 'user' ? 'user' : 'assistant');
+      wrap.innerHTML = `
+        <div class="avatar">${role === 'user' ? 'Você' : 'AI'}</div>
+        <div class="bubble">${html}</div>
+      `;
+      $('messages').appendChild(wrap);
+      $('messages').scrollTop = $('messages').scrollHeight;
+      return wrap;
+    }
+
+    function addWelcome(){
+      const html = `
+        <div class="welcome-box">
+          <div class="eyebrow">Como este projeto funciona</div>
+          <h3>Faça uma pergunta ou abra as categorias</h3>
+          <p>Este assistente orienta sobre consumo de eletricidade de notebooks, eficiência energética e energia solar. Todos os valores são cenários simulados e cada orientação apresenta fontes e limitações.</p>
+          <div class="quick-list">
+            <button class="quick-btn" data-prompt="Quanto gasta meu notebook de energia?">Quanto gasta meu notebook de energia?</button>
+            <button class="quick-btn" data-prompt="Como economizar energia no notebook?">Como economizar energia no notebook?</button>
+            <button class="quick-btn" data-prompt="Vale a pena energia solar para notebook?">Vale a pena energia solar para notebook?</button>
+          </div>
+        </div>`;
+      addMessage('assistant', html);
+      document.querySelectorAll('.quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $('input').value = btn.dataset.prompt;
+          enviarPergunta();
+        });
+      });
+    }
+
+    function contextPayload(){
+      return { modo: state.mode, participante: state.mode === 'operador' ? 'OPERADOR' : state.participant };
+    }
+
+    function formatList(items){
+      if(!items || !items.length) return '<span class="empty">Nenhum documento informado.</span>';
+      return `<ul class="doc-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+    }
+
+    function renderOrientation(result){
+      const o = result.orientacao;
+      const alternatives = (result.alternativas || []).length
+        ? `<div class="alternatives"><strong>Outras orientações relacionadas</strong><ul>${result.alternativas.map(item => `<li>${escapeHtml(item.titulo)}${item.pontos ? ` (${item.pontos} pontos)` : ''}</li>`).join('')}</ul></div>`
+        : '';
+      const scorePill = result.pontos == null ? '' : `<span class="mini-pill">${result.pontos} pontos</span>`;
+      const html = `
+        <div class="result-card">
+          <div class="eyebrow">Resposta encontrada</div>
+          <h4>${escapeHtml(o.titulo)}</h4>
+          <div class="meta-row">
+            <span class="mini-pill">${escapeHtml(o.categoria)}</span>
+            <span class="mini-pill">Confiança ${escapeHtml(result.confianca)}</span>
+            ${scorePill}
+            <span class="mini-pill">Tentativas: ${result.tentativas}</span>
+          </div>
+          <div>${escapeHtml(o.resposta)}</div>
+          <section><strong>Documentos ou requisitos</strong>${formatList(o.documentos)}</section>
+          <section><strong>Onde consultar ou fazer</strong><div>${escapeHtml(o.onde)}</div></section>
+          <section><strong>Fonte</strong><div><a href="${escapeHtml(o.fonte)}" target="_blank" rel="noopener">${escapeHtml(o.fonte)}</a></div><div class="small-note">Verificado em ${escapeHtml(o.verificado_em)}</div></section>
+          ${alternatives}
+          <div class="answer-actions">
+            <button class="primary-btn" data-feedback="true">Ajudou</button>
+            <button class="ghost-btn" data-feedback="false">Não ajudou</button>
+          </div>
+        </div>`;
+      const msg = addMessage('assistant', html);
+      state.waitingEvaluation = true;
+      msg.querySelectorAll('[data-feedback]').forEach(btn => {
+        btn.addEventListener('click', () => avaliarResposta(btn.dataset.feedback === 'true'));
+      });
+    }
+
+    function renderNotFound(message, tentativas){
+      state.waitingEvaluation = false;
+      $('unsolvedBtn').classList.remove('hidden');
+      addMessage('assistant', `
+        <div>
+          <div class="eyebrow">Sem resposta confiável</div>
+          <strong>Ainda não encontrei essa orientação.</strong>
+          <p style="margin:10px 0 0;color:var(--muted)">${escapeHtml(message)}</p>
+          <p style="margin:10px 0 0;color:var(--muted)">Tentativas nesta dúvida: ${tentativas}</p>
+        </div>`);
+    }
+
+    async function enviarPergunta(){
+      if(state.loading || state.waitingEvaluation) return;
+      const value = $('input').value.trim();
+      if(!value){ toast('Digite uma pergunta antes de enviar.'); return; }
+      state.loading = true;
+      state.anyInteraction = true;
+      addMessage('user', escapeHtml(value));
+      $('input').value = '';
+      $('unsolvedBtn').classList.add('hidden');
+      try{
+        const data = await apiPost('perguntar', { ...contextPayload(), pergunta: value });
+        if(data.encontrou) renderOrientation(data);
+        else renderNotFound(data.mensagem, data.tentativas);
+        if(state.mode === 'operador') atualizarIndicadores();
+      }catch(error){
+        addMessage('assistant', `<span class="no">${escapeHtml(error.message)}</span>`);
+      }finally{
+        state.loading = false;
+      }
+    }
+
+    async function avaliarResposta(ajudou){
+      if(!state.waitingEvaluation) return;
+      state.loading = true;
+      try{
+        await apiPost('avaliar', { ...contextPayload(), ajudou });
+        state.waitingEvaluation = false;
+        $('unsolvedBtn').classList.add('hidden');
+        addMessage('assistant', ajudou
+          ? 'Perfeito. Registrei que a orientação ajudou você.'
+          : 'Tudo bem. Registrei que a orientação não resolveu sua dúvida. Você pode tentar outra pergunta.');
+        if(state.mode === 'operador') atualizarIndicadores();
+      }catch(error){
+        toast(error.message);
+      }finally{
+        state.loading = false;
+      }
+    }
+
+    async function registrarSemSolucao(){
+      if(state.loading) return;
+      state.loading = true;
+      try{
+        await apiPost('sem-solucao', contextPayload());
+        addMessage('assistant', 'Registrei esta dúvida como <strong>sem solução</strong>. Você pode iniciar uma nova pergunta.');
+        $('unsolvedBtn').classList.add('hidden');
+        if(state.mode === 'operador') atualizarIndicadores();
+      }catch(error){
+        toast(error.message);
+      }finally{
+        state.loading = false;
+      }
+    }
+
+    async function escolherOrientacao(id, titulo){
+      if(state.loading || state.waitingEvaluation) return;
+      $('categoriesModal').classList.remove('show');
+      state.anyInteraction = true;
+      addMessage('user', `Abrir orientação: ${escapeHtml(titulo)}`);
+      state.loading = true;
+      try{
+        const data = await apiPost('categoria', { ...contextPayload(), id });
+        renderOrientation(data);
+        if(state.mode === 'operador') atualizarIndicadores();
+      }catch(error){
+        addMessage('assistant', `<span class="no">${escapeHtml(error.message)}</span>`);
+      }finally{
+        state.loading = false;
+      }
+    }
+
+    function renderCategories(){
+      const container = $('categoriesContent');
+      container.innerHTML = '';
+      state.categories.forEach(category => {
+        const block = document.createElement('section');
+        block.className = 'category-block';
+        block.innerHTML = `<h4>${escapeHtml(category.nome)}</h4><div class="cat-buttons"></div>`;
+        const buttons = block.querySelector('.cat-buttons');
+        category.orientacoes.forEach(item => {
+          const btn = document.createElement('button');
+          btn.textContent = item.titulo;
+          btn.addEventListener('click', () => escolherOrientacao(item.id, item.titulo));
+          buttons.appendChild(btn);
+        });
+        container.appendChild(block);
+      });
+    }
+
+    function resetChat(includeWelcome=true){
+      $('messages').innerHTML = '';
+      if(includeWelcome) addWelcome();
+      $('unsolvedBtn').classList.add('hidden');
+      state.waitingEvaluation = false;
+      state.anyInteraction = false;
+    }
+
+    async function limparConversa(){
+      try{ await apiPost('reiniciar', contextPayload()); } catch(_) {}
+      resetChat(true);
+      toast('Conversa limpa. Você pode começar de novo.');
+    }
+
+    async function novoParticipante(force=false){
+      if(!force && state.waitingEvaluation){ toast('Avalie a orientação atual antes de iniciar outra sessão.'); return; }
+      const data = await apiPost('novo-participante', { modo:'teste', participante:'P-AAAAAA' });
+      state.participant = data.participante;
+      sessionStorage.setItem('ca_participant', state.participant);
+      $('idPill').textContent = 'Sessão ' + state.participant;
+      try { await apiPost('reiniciar', { modo:'teste', participante: state.participant }); } catch(_) {}
+      resetChat(true);
+    }
+
+    function openRating(){
+      $('ratingModal').classList.add('show');
+      state.selectedRating = null;
+      $('ratingSave').disabled = true;
+      document.querySelectorAll('#ratingButtons button').forEach(btn => btn.classList.remove('active'));
+    }
+
+    async function salvarNota(){
+      if(state.selectedRating == null) return;
+      try{
+        await apiPost('facilidade', { ...contextPayload(), nota: state.selectedRating });
+        $('ratingModal').classList.remove('show');
+        addMessage('assistant', `Obrigado. Registrei a nota <strong>${state.selectedRating}</strong> para a facilidade de uso.`);
+        toast('Avaliação salva com sucesso.');
+      }catch(error){
+        toast(error.message);
+      }
+    }
+
+    function formatMaybe(value, suffix=''){
+      return value == null ? '—' : String(value).replace('.', ',') + suffix;
+    }
+
+    function boolLabel(value){
+      if(value === true) return '<span class="yes">Sim</span>';
+      if(value === false) return '<span class="no">Não</span>';
+      return '—';
+    }
+
+    function renderHistoryRows(targetId, registros, emptyText, isOperator=false){
+      const body = $(targetId);
+      if(!registros || !registros.length){
+        body.innerHTML = `<tr><td colspan="${isOperator ? 6 : 7}">${emptyText}</td></tr>`;
+        return;
+      }
+      body.innerHTML = registros.map(item => {
+        const perguntas = (item.perguntas || []).length ? item.perguntas.map(p => escapeHtml(p)).join('<br>') : '—';
+        if(isOperator){
+          return `<tr>
+            <td>${escapeHtml(item.pergunta || '')}</td>
+            <td>${perguntas}</td>
+            <td>${boolLabel(item.encontrou)}</td>
+            <td>${boolLabel(item.ajudou)}</td>
+            <td>${item.tentativas ?? '—'}</td>
+            <td>${formatMaybe(item.tempo_segundos,' s')}</td>
+          </tr>`;
+        }
+        return `<tr>
+          <td>${escapeHtml(item.participante || '—')}</td>
+          <td>${escapeHtml(item.pergunta || '')}</td>
+          <td>${perguntas}</td>
+          <td>${boolLabel(item.encontrou)}</td>
+          <td>${boolLabel(item.ajudou)}</td>
+          <td>${item.tentativas ?? '—'}</td>
+          <td>${formatMaybe(item.tempo_segundos,' s')}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function setProgress(nodeBar, nodeText, value, goal){
+      const pct = Math.min(100, Math.round(((value || 0) / goal) * 100));
+      $(nodeBar).style.width = pct + '%';
+      $(nodeText).textContent = `${value || 0} / ${goal}`;
+    }
+
+    async function atualizarIndicadores(){
+      if(state.mode !== 'operador') return;
+      try{
+        const data = await fetchJson('/api/indicadores');
+        const teste = data.teste || {};
+        const operador = data.operador || {};
+        $('kTotal').textContent = formatMaybe(teste.total);
+        $('kParticipants').textContent = formatMaybe(teste.participantes);
+        $('kQuestions').textContent = formatMaybe(teste.perguntas_totais);
+        $('kFound').textContent = formatMaybe(teste.resposta_encontrada_pct, '%');
+        $('kHelped').textContent = formatMaybe(teste.taxa_acerto_pct, '%');
+        $('kTime').textContent = formatMaybe(teste.tempo_medio_segundos, ' s');
+        $('kAttempts').textContent = formatMaybe(teste.tentativas_medias);
+        $('kEase').textContent = formatMaybe(teste.facilidade_media);
+
+        const unsolved = teste.sem_solucao || [];
+        $('unsolvedList').innerHTML = unsolved.map(item => `<li>${escapeHtml(item)}</li>`).join('');
+        $('unsolvedEmpty').classList.toggle('hidden', unsolved.length > 0);
+
+        renderHistoryRows('historyTestBody', teste.registros || [], 'Nenhum atendimento registrado.');
+        renderHistoryRows('historyOperatorBody', operador.registros || [], 'Nenhuma conversa do operador registrada.', true);
+      }catch(error){
+        toast(error.message);
+      }
+    }
+
+    function startPolling(){
+      if(state.mode !== 'operador') return;
+      clearInterval(state.pollTimer);
+      atualizarIndicadores();
+      state.pollTimer = setInterval(atualizarIndicadores, 4000);
+    }
+
+    function configureView(){
+      $('landing').classList.add('hidden');
+      $('app').classList.add('hidden');
+      if(state.route === '/' || state.route === '/index.html'){
+        $('landing').classList.remove('hidden');
+        return;
+      }
+      $('app').classList.remove('hidden');
+      if(state.route === '/operador'){
+        state.mode = 'operador';
+        $('mainLayout').classList.add('operator');
+        $('operatorPanel').classList.remove('hidden');
+        $('headEyebrow').textContent = 'Chat do operador';
+        $('chatTitle').textContent = 'Teste o chatbot e acompanhe os indicadores';
+        $('chatDescription').textContent = 'As perguntas feitas pelo operador ficam registradas separadamente dos testes com participantes.';
+        $('idPill').textContent = 'Operador';
+        $('newParticipantBtn').classList.add('hidden');
+        $('finishBtn').classList.add('hidden');
+        $('exportBtnTop').classList.remove('hidden');
+        $('input').placeholder = 'Teste uma pergunta sem afetar os indicadores dos participantes...';
+        $('inputHint').textContent = 'Seu chat é separado. As estatísticas principais consideram apenas os participantes externos.';
+        startPolling();
+      } else {
+        state.mode = 'teste';
+        $('mainLayout').classList.remove('operator');
+        $('operatorPanel').classList.add('hidden');
+        $('headEyebrow').textContent = 'Chat do participante';
+        $('chatTitle').textContent = 'Pergunte e avalie a resposta';
+        $('chatDescription').textContent = 'Cada participante recebe um ID por sessão. Não informe nome, CPF, telefone ou e-mail.';
+        $('newParticipantBtn').classList.remove('hidden');
+        $('finishBtn').classList.remove('hidden');
+        $('exportBtnTop').classList.add('hidden');
+        state.participant = sessionStorage.getItem('ca_participant') || '';
+      }
+      resetChat(true);
+    }
+
+    async function initParticipantSession(){
+      if(state.mode !== 'teste') return;
+      if(!state.participant){
+        await novoParticipante(true);
+      } else {
+        $('idPill').textContent = 'Sessão ' + state.participant;
+      }
+    }
+
+    function bindEvents(){
+      $('sendBtn').addEventListener('click', enviarPergunta);
+      $('input').addEventListener('keydown', (event) => {
+        if(event.key === 'Enter' && !event.shiftKey){
+          event.preventDefault();
+          enviarPergunta();
+        }
+      });
+      $('categoriesOpen').addEventListener('click', () => $('categoriesModal').classList.add('show'));
+      $('categoriesClose').addEventListener('click', () => $('categoriesModal').classList.remove('show'));
+      $('categoriesModal').addEventListener('click', (event) => { if(event.target === $('categoriesModal')) $('categoriesModal').classList.remove('show'); });
+      $('clearBtn').addEventListener('click', limparConversa);
+      $('unsolvedBtn').addEventListener('click', registrarSemSolucao);
+      $('newParticipantBtn').addEventListener('click', () => novoParticipante(false));
+      $('finishBtn').addEventListener('click', openRating);
+      $('ratingCancel').addEventListener('click', () => $('ratingModal').classList.remove('show'));
+      $('ratingSave').addEventListener('click', salvarNota);
+      document.querySelectorAll('#ratingButtons button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.selectedRating = Number(btn.dataset.rate);
+          document.querySelectorAll('#ratingButtons button').forEach(other => other.classList.remove('active'));
+          btn.classList.add('active');
+          $('ratingSave').disabled = false;
+        });
+      });
+    }
+
+    async function bootstrap(){
+      configureView();
+      bindEvents();
+      if(state.route === '/' || state.route === '/index.html') return;
+      try{
+        await carregarBase();
+        await initParticipantSession();
+        if(state.mode === 'operador') atualizarIndicadores();
+      }catch(error){
+        resetChat(false);
+        addMessage('assistant', `<span class="no">${escapeHtml(error.message)}</span>`);
+      }
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>

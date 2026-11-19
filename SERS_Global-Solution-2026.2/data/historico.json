@@ -1,0 +1,50 @@
+[
+  {
+    "data": "2026-11-19T17:14:29",
+    "origem": "pergunta",
+    "pergunta": "Quanto gasta meu notebook de energia?",
+    "perguntas": [
+      "Quanto gasta meu notebook de energia?"
+    ],
+    "id_orientacao": 1,
+    "encontrou": true,
+    "ajudou": true,
+    "tentativas": 1,
+    "tempo_segundos": 6.0,
+    "facilidade": null,
+    "participante": "P-F73EDD",
+    "modo": "teste"
+  },
+  {
+    "data": "2026-11-19T17:15:17",
+    "origem": "pergunta",
+    "pergunta": "Como economizar energia no meu notebook?",
+    "perguntas": [
+      "Como economizar energia no meu notebook?"
+    ],
+    "id_orientacao": 2,
+    "encontrou": true,
+    "ajudou": false,
+    "tentativas": 1,
+    "tempo_segundos": 17.7,
+    "facilidade": null,
+    "participante": "P-F73EDD",
+    "modo": "teste"
+  },
+  {
+    "data": "2026-11-19T17:15:56",
+    "origem": "pergunta",
+    "pergunta": "Vale a pena energia solar para notebook?",
+    "perguntas": [
+      "Vale a pena energia solar para notebook?"
+    ],
+    "id_orientacao": 3,
+    "encontrou": true,
+    "ajudou": true,
+    "tentativas": 1,
+    "tempo_segundos": 25.2,
+    "facilidade": null,
+    "participante": "P-F73EDD",
+    "modo": "teste"
+  }
+]

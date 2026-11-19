@@ -1,0 +1,4 @@
+﻿data,origem,pergunta,perguntas,id_orientacao,encontrou,ajudou,tentativas,tempo_segundos,facilidade,participante,modo
+2026-11-19T17:14:29,pergunta,Quanto gasta meu notebook de energia?,Quanto gasta meu notebook de energia?,1,True,True,1,6.0,,P-F73EDD,teste
+2026-11-19T17:15:17,pergunta,Como economizar energia no meu notebook?,Como economizar energia no meu notebook?,2,True,False,1,17.7,,P-F73EDD,teste
+2026-11-19T17:15:56,pergunta,Vale a pena energia solar para notebook?,Vale a pena energia solar para notebook?,3,True,True,1,25.2,,P-F73EDD,teste

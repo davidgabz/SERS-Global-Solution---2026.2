@@ -1,0 +1,4 @@
+﻿alternativa,consumo_notebook_kwh_mes,energia_solar_atribuida_kwh_mes,custo_variavel_teorico_rs_mes,investimento_inicial_hipotetico_rs,nota
+Base da rede,3.30,0.00,3.30,0.00,Cenário sem intervenções; custo ilustrativo
+Eficiência energética,2.20,0.00,2.20,0.00,"Potência de 20 W é hipótese, não medição"
+Solar fotovoltaica,3.30,3.30,0.00,5000.00,Custo variável é apenas limite ideal; NÃO é a conta de luz real

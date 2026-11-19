@@ -1,0 +1,55 @@
+{
+  "identificacao": "Citizen Assist AI Energia - Soluções em Energias Renováveis e Sustentáveis / FIAP GS 2026.2",
+  "cenario": "Notebook genérico em atividades de estudo de Ciência da Computação; carga avaliada individualmente",
+  "local_referencia": "São Paulo, SP (sem dados meteorológicos medidos para o endereço)",
+  "periodo_referencia": "mês ilustrativo (22 dias de uso do notebook e 30 dias de geração solar)",
+  "potencia_media_base_w": 30,
+  "potencia_media_eficiente_w": 20,
+  "horas_uso_por_dia": 5,
+  "dias_uso_por_mes": 22,
+  "tarifa_simulada_rs_por_kwh": 1.0,
+  "custo_extra_eficiencia_rs": 0.0,
+  "pv_potencia_kwp": 1.0,
+  "pv_horas_sol_pleno_equivalentes_dia": 4.0,
+  "pv_fator_desempenho": 0.8,
+  "pv_dias_por_mes": 30,
+  "pv_investimento_hipotetico_rs": 5000.0,
+  "observacoes_premissas": [
+    "30 W e 20 W são duas hipóteses para carga média na tomada, não medições do dispositivo; ambos estão na faixa pública de 10 a 38 W para laptops informada pelo governo da Austrália.",
+    "A passagem de 30 W para 20 W não é economia garantida; precisa ser medida no mesmo notebook com tarefas equivalentes.",
+    "5 h/dia e 22 dias/mês são rotina fictícia de estudante; horas e dias da geração PV foram escolhidos independentemente.",
+    "R$1,00/kWh é tarifa única simplificada e fictícia, não uma tarifa local validada; fatura real inclui tributos, encargos e componentes adicionais.",
+    "4 h/dia de sol pleno equivalentes e fator 0,80 são hipóteses de simulação, não consulta medida de São Paulo; ideal validar no CRESESB SunData ou PVGIS.",
+    "1 kWp é uma instalação de referência doméstica muito superior à carga de um único notebook; o estudo limita seu benefício econômico à parcela do notebook.",
+    "R$5.000 é investimento hipotético para demonstração, NÃO é cotação de projeto fotovoltaico.",
+    "A compensação de energia na rede depende das regras da ANEEL, do contrato, impostos, tarifas e custo de disponibilidade; economia total de fatura não é garantida.",
+    "Não há medição de CO2, ciclo de vida, consumo real ou consulta de preço de mercado; os impactos ambientais são qualitativos."
+  ],
+  "fontes": [
+    {
+      "descricao": "Faixa orientativa de potência de notebooks (10-38 W)",
+      "url": "https://www.sa.gov.au/topics/energy-and-environment/using-saving-energy/using-and-buying-appliances/electronics"
+    },
+    {
+      "descricao": "Gestão de energia e recomendações para computadores - Department of Energy",
+      "url": "https://www.energy.gov/cmei/femp/purchasing-energy-efficient-computers"
+    },
+    {
+      "descricao": "Estimativa e consulta de irradiação solar - CRESESB SunData",
+      "url": "https://www.cresesb.cepel.br/index.php?section=sundata"
+    },
+    {
+      "descricao": "Geração solar e perdas - PVGIS - Comissão Europeia",
+      "url": "https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis_en"
+    },
+    {
+      "descricao": "Microgeração e compensação - ANEEL",
+      "url": "https://www.gov.br/aneel/pt-br/assuntos/geracao/geracao-distribuida"
+    },
+    {
+      "descricao": "Impactos socioambientais da fotovoltaica - EPE",
+      "url": "https://www.epe.gov.br/pt/areas-de-atuacao/energia-eletrica/expansao-da-geracao/fontes"
+    }
+  ],
+  "data_da_preparacao": "2026-11-19"
+}

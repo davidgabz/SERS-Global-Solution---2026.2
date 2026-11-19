@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "categoria": "Energia e sustentabilidade",
+    "titulo": "Estimar o consumo e o custo mensal de um notebook para estudar",
+    "palavras_chave": [
+      "quanto gasta meu notebook de energia",
+      "quanto gasta meu notebook",
+      "quanto consome meu notebook",
+      "consumo de energia do notebook",
+      "quanto gasta notebook",
+      "consumo do notebook",
+      "energia notebook",
+      "quanto custa energia notebook",
+      "consumo mensal notebook",
+      "quantos kwh meu notebook",
+      "notebook e eletricidade",
+      "gasto energia notebook"
+    ],
+    "resposta": "Em um cenário SIMULADO de estudante, um notebook genérico de potência média de 30 W, ligado 5 horas por dia em 22 dias, consome 3,30 kWh/mês. Aplicando a tarifa FICTÍCIA de R$ 1,00/kWh, a parcela variável seria R$ 3,30/mês. Isso não é medição nem valor real de conta. O consumo varia por modelo, tarefa, brilho, bateria e hábitos; 30 W foi uma hipótese dentro da faixa de 10 a 38 W publicada pelo governo da Austrália. Para reproduzir as contas, veja analise/analise_energetica.md.",
+    "documentos": [
+      "Modelo e potência média medida (preferencialmente com medidor de tomada), se disponíveis",
+      "Horas e dias de uso",
+      "Tarifa efetiva da conta para substituir a hipótese simulada"
+    ],
+    "onde": "Consulte analise/analise_energetica.md e analise/premissas.json no projeto. O exemplo considera somente o notebook, sem periféricos.",
+    "fonte": "https://www.sa.gov.au/topics/energy-and-environment/using-saving-energy/using-and-buying-appliances/electronics",
+    "verificado_em": "2026-11-19"
+  },
+  {
+    "id": 2,
+    "categoria": "Energia e sustentabilidade",
+    "titulo": "Economizar energia no notebook durante os estudos",
+    "palavras_chave": [
+      "economizar energia no notebook",
+      "reduzir consumo notebook",
+      "economia de energia notebook",
+      "modo economico notebook",
+      "menos gasto energia estudando",
+      "eficiencia energetica notebook",
+      "como diminuir energia do notebook"
+    ],
+    "resposta": "A alternativa de EFICIÊNCIA do estudo é utilizar modos de economia, suspender quando ocioso e ajustar brilho e tempo de tela, sem prejudicar a tarefa. Para comparar, SUPOMOS que a potência média caia de 30 W para 20 W com o mesmo uso de 5 h/dia por 22 dias. O consumo cairia de 3,30 para 2,20 kWh/mês: redução de 1,10 kWh, ou 33,3%, e economia ilustrativa de R$ 1,10/mês com tarifa fictícia de R$ 1,00/kWh. A redução de potência é uma hipótese, não ganho comprovado no mesmo aparelho; confirme com medição. Investimento adicional simulado: R$ 0.",
+    "documentos": [
+      "Configurações de energia do sistema operacional",
+      "Medições comparáveis antes/depois para validar a economia",
+      "Rotina de uso considerada"
+    ],
+    "onde": "Ative as opções de economia de energia do notebook e consulte analise/analise_energetica.md para a comparação.",
+    "fonte": "https://www.energy.gov/cmei/femp/purchasing-energy-efficient-computers",
+    "verificado_em": "2026-11-19"
+  },
+  {
+    "id": 3,
+    "categoria": "Energia e sustentabilidade",
+    "titulo": "Comparar energia solar fotovoltaica e eficiência para um notebook",
+    "palavras_chave": [
+      "energia solar para notebook",
+      "painel solar notebook",
+      "vale a pena energia solar",
+      "solar fotovoltaica estudar",
+      "notebook com energia renovavel",
+      "energia solar versus economia",
+      "instalar placa solar notebook",
+      "comparar energia solar"
+    ],
+    "resposta": "A comparação SIMULADA considera o mesmo notebook (3,30 kWh/mês). Um sistema fotovoltaico doméstico hipotético de 1 kWp, com 4 horas de sol pleno equivalentes/dia, 30 dias e fator de desempenho de 80%, geraria teoricamente 96 kWh/mês. Apenas ATÉ 3,30 kWh desse total são atribuíveis ao notebook, e a economia variável máxima hipotética seria R$ 3,30/mês (tarifa fictícia R$ 1/kWh), não uma redução garantida da fatura. Com investimento também fictício de R$ 5.000, retorno baseado só na parcela do notebook excederia 126 anos, desconsiderando custos e regras reais. Por isso NÃO recomendamos instalar um sistema de 1 kWp apenas para esse notebook. Para uma residência inteira, seria necessária outra análise. A geração renovável depende de sol, perdas, instalação e regras de compensação da ANEEL; há impactos ambientais na fabricação e no descarte. A alternativa de eficiência (30 W para 20 W como hipótese) seria mais simples e barata para essa carga pequena.",
+    "documentos": [
+      "Consumo elétrico real da residência e do notebook",
+      "Irradiação local obtida no CRESESB SunData ou PVGIS",
+      "Orçamento do fornecedor e regras de conexão com a distribuidora"
+    ],
+    "onde": "Leia analise/analise_energetica.md para premissas, comparação, limitações e fontes. Para avaliar compensação de energia, consulte a ANEEL.",
+    "fonte": "https://www.gov.br/aneel/pt-br/assuntos/geracao/geracao-distribuida",
+    "verificado_em": "2026-11-19"
+  }
+]
